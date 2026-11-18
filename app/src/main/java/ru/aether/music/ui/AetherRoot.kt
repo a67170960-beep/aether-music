@@ -1,5 +1,7 @@
 package ru.aether.music.ui
 
+import androidx.compose.ui.Modifier.Modifier
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

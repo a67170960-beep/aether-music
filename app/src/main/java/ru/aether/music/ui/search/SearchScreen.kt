@@ -1,5 +1,7 @@
 package ru.aether.music.ui.search
 
+import androidx.compose.ui.Modifier.Modifier
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize

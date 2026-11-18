@@ -1,5 +1,7 @@
 package ru.aether.music
 
+import androidx.compose.ui.Modifier.Modifier
+
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build

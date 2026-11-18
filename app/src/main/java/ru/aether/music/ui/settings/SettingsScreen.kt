@@ -1,5 +1,7 @@
 package ru.aether.music.ui.settings
 
+import androidx.compose.ui.Modifier.Modifier
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
