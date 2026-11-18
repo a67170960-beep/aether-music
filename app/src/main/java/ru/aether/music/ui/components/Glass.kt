@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -28,7 +29,6 @@ import androidx.compose.ui.unit.sp
 import ru.aether.music.data.repo.GlassMode
 import ru.aether.music.ui.theme.AetherPrimary
 import ru.aether.music.ui.theme.GlassBorder
-import ru.aether.music.ui.theme.GlassWhite
 
 @Composable
 fun LiquidGlassPanel(
@@ -55,19 +55,19 @@ fun LiquidGlassPanel(
         else -> 16f * intensity
     }
 
-    val base = Modifier
-        .then(modifier)
+    var base = modifier
         .shadow(12.dp, shape, ambientColor = Color.Black.copy(0.35f), spotColor = AetherPrimary.copy(0.25f))
         .clip(shape)
-        .then(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && blurRadius > 1f) {
-                Modifier.graphicsLayer {
-                    renderEffect = RenderEffect
-                        .createBlurEffect(blurRadius, blurRadius, Shader.TileMode.CLAMP)
-                        .asComposeRenderEffect()
-                }
-            } else Modifier
-        )
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && blurRadius > 1f) {
+        base = base.graphicsLayer {
+            renderEffect = RenderEffect
+                .createBlurEffect(blurRadius, blurRadius, Shader.TileMode.CLAMP)
+                .asComposeRenderEffect()
+        }
+    }
+
+    base = base
         .background(
             Brush.linearGradient(
                 listOf(
@@ -78,13 +78,14 @@ fun LiquidGlassPanel(
             )
         )
         .border(1.dp, GlassBorder.copy(alpha = 0.35f + intensity * 0.25f), shape)
-        .then(
-            if (onClick != null) Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onClick
-            ) else Modifier
+
+    if (onClick != null) {
+        base = base.clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = null,
+            onClick = onClick
         )
+    }
 
     Box(modifier = base, content = content)
 }
@@ -106,7 +107,7 @@ fun GlassButton(
             Modifier.padding(horizontal = 18.dp, vertical = 12.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(text, color = Color.White, fontSize = 15.sp)
+            Text(text = text, color = Color.White, fontSize = 15.sp)
         }
     }
 }
@@ -115,19 +116,24 @@ fun GlassButton(
 fun LiquidBackground(mode: GlassMode = GlassMode.EXTREME) {
     val vivid = mode != GlassMode.PERFORMANCE && mode != GlassMode.MINIMAL
     Box(
-        Modifier
+        modifier = Modifier
+            .fillMaxSize()
             .background(Color(0xFF0A0A12))
             .then(
-                if (vivid) Modifier.background(
-                    Brush.verticalGradient(
-                        listOf(
-                            Color(0xFF0A0A12),
-                            Color(0xFF12123A),
-                            Color(0xFF0A1A22),
-                            Color(0xFF0A0A12)
+                if (vivid) {
+                    Modifier.background(
+                        Brush.verticalGradient(
+                            listOf(
+                                Color(0xFF0A0A12),
+                                Color(0xFF12123A),
+                                Color(0xFF0A1A22),
+                                Color(0xFF0A0A12)
+                            )
                         )
                     )
-                ) else Modifier
+                } else {
+                    Modifier
+                }
             )
     )
 }

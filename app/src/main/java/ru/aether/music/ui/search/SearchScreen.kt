@@ -1,7 +1,5 @@
 package ru.aether.music.ui.search
 
-import androidx.compose.ui.Modifier.Modifier
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,10 +15,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier.fillMaxSize
-import androidx.compose.ui.modifier.fillMaxWidth
+import androidx.compose.ui.modifier.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.aether.music.data.model.Track
@@ -38,8 +36,17 @@ fun SearchScreen(
     var query by remember { mutableStateOf("") }
     val results by vm.searchResults.collectAsState()
 
-    Column(Modifier.fillMaxSize().padding(top = 40.dp)) {
-        Text("Search", color = Color.White, fontSize = 26.sp, modifier = Modifier.padding(horizontal = 16.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 40.dp)
+    ) {
+        Text(
+            "Search",
+            color = Color.White,
+            fontSize = 26.sp,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
         LiquidGlassPanel(
             modifier = Modifier
                 .padding(16.dp)
@@ -55,12 +62,14 @@ fun SearchScreen(
                 },
                 singleLine = true,
                 cursorBrush = SolidColor(Color.White),
-                textStyle = androidx.compose.ui.text.TextStyle(color = Color.White, fontSize = 16.sp),
+                textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(14.dp),
                 decorationBox = { inner ->
-                    if (query.isEmpty()) Text("Songs, artists, albums…", color = Color.White.copy(0.45f))
+                    if (query.isEmpty()) {
+                        Text("Songs, artists, albums…", color = Color.White.copy(0.45f))
+                    }
                     inner()
                 }
             )

@@ -1,7 +1,5 @@
 package ru.aether.music.ui.components
 
-import androidx.compose.ui.Modifier.Modifier
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +17,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +35,7 @@ fun TrackListItem(
     onFavorite: () -> Unit
 ) {
     Row(
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 8.dp),
@@ -49,21 +49,21 @@ fun TrackListItem(
                 .size(52.dp)
                 .clip(RoundedCornerShape(12.dp))
         )
-        Spacer(Modifier.Width(12.dp))
-        Column(Modifier.weight(1f)) {
-            Text(track.displayTitle, color = androidx.compose.ui.graphics.Color.White, fontSize = 15.sp, maxLines = 1)
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(track.displayTitle, color = Color.White, fontSize = 15.sp, maxLines = 1)
             Text(
                 "${track.displayArtist} · ${track.displayAlbum}",
-                color = androidx.compose.ui.graphics.Color.White.copy(0.6f),
+                color = Color.White.copy(0.6f),
                 fontSize = 12.sp,
                 maxLines = 1
             )
         }
         IconButton(onClick = onFavorite) {
             Icon(
-                if (track.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                imageVector = if (track.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                 contentDescription = "Favorite",
-                tint = if (track.isFavorite) AetherPrimary else androidx.compose.ui.graphics.Color.White.copy(0.7f)
+                tint = if (track.isFavorite) AetherPrimary else Color.White.copy(0.7f)
             )
         }
     }

@@ -1,7 +1,5 @@
 package ru.aether.music.ui.home
 
-import androidx.compose.ui.Modifier.Modifier
-
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -62,12 +60,12 @@ fun HomeScreen(
     }
 
     LazyColumn(
-        Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 100.dp)
     ) {
         item {
             Text(
-                "$greet",
+                greet,
                 color = Color.White,
                 fontSize = 28.sp,
                 modifier = Modifier.padding(start = 20.dp, top = 48.dp, end = 20.dp)
@@ -81,7 +79,7 @@ fun HomeScreen(
         }
         item {
             Row(
-                Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -90,16 +88,27 @@ fun HomeScreen(
                     onClick = { if (!scanning) vm.scanLibrary() },
                     mode = glassMode
                 )
-                if (scanning) CircularProgressIndicator(Modifier = Modifier.size(22.dp), strokeWidth = 2.dp)
-                if (status.isNotBlank()) Text(status, color = Color.White.copy(0.7f), fontSize = 12.sp)
+                if (scanning) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(22.dp),
+                        strokeWidth = 2.dp
+                    )
+                }
+                if (status.isNotBlank()) {
+                    Text(status, color = Color.White.copy(0.7f), fontSize = 12.sp)
+                }
             }
-            Spacer(Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
         }
 
         if (recent.isNotEmpty()) {
             item { SectionTitle("Continue listening") }
             item {
-                Row(Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
+                Row(
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .padding(horizontal = 12.dp)
+                ) {
                     recent.take(12).forEachIndexed { index, t ->
                         LiquidGlassPanel(
                             modifier = Modifier
@@ -112,7 +121,7 @@ fun HomeScreen(
                                 onOpenPlayer()
                             }
                         ) {
-                            Column(Modifier.padding(10.dp)) {
+                            Column(modifier = Modifier.padding(10.dp)) {
                                 AsyncImage(
                                     model = vm.albumArt(t),
                                     contentDescription = null,
@@ -136,7 +145,10 @@ fun HomeScreen(
                 TrackListItem(
                     track = t,
                     artUri = vm.albumArt(t),
-                    onClick = { onPlayTrack(favorites, index); onOpenPlayer() },
+                    onClick = {
+                        onPlayTrack(favorites, index)
+                        onOpenPlayer()
+                    },
                     onFavorite = { vm.setFavorite(t.id, !t.isFavorite) }
                 )
             }
@@ -148,7 +160,10 @@ fun HomeScreen(
                 TrackListItem(
                     track = t,
                     artUri = vm.albumArt(t),
-                    onClick = { onPlayTrack(most, index); onOpenPlayer() },
+                    onClick = {
+                        onPlayTrack(most, index)
+                        onOpenPlayer()
+                    },
                     onFavorite = { vm.setFavorite(t.id, !t.isFavorite) }
                 )
             }
@@ -160,7 +175,10 @@ fun HomeScreen(
                 TrackListItem(
                     track = t,
                     artUri = vm.albumArt(t),
-                    onClick = { onPlayTrack(added, index); onOpenPlayer() },
+                    onClick = {
+                        onPlayTrack(added, index)
+                        onOpenPlayer()
+                    },
                     onFavorite = { vm.setFavorite(t.id, !t.isFavorite) }
                 )
             }
@@ -168,7 +186,12 @@ fun HomeScreen(
 
         if (tracks.isEmpty() && !scanning) {
             item {
-                LiquidGlassPanel(Modifier = Modifier.padding(20.dp).fillMaxWidth(), mode = glassMode) {
+                LiquidGlassPanel(
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxSize(),
+                    mode = glassMode
+                ) {
                     Text(
                         "No tracks yet. Grant audio permission and tap Scan library.",
                         color = Color.White.copy(0.8f),

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Pause
@@ -32,12 +31,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 import ru.aether.music.data.repo.GlassMode
 import ru.aether.music.player.PlayerController
@@ -53,7 +49,7 @@ fun MiniPlayerBar(
     onOpen: () -> Unit,
     onPlayPause: () -> Unit,
     onNext: () -> Unit,
-    modifier: androidx.compose.ui.Modifier.Modifier = androidx.compose.ui.Modifier.Modifier
+    modifier: Modifier = Modifier
 ) {
     val t = state.current ?: return
     LiquidGlassPanel(
@@ -66,22 +62,22 @@ fun MiniPlayerBar(
         onClick = onOpen
     ) {
         Row(
-            Modifier.padding(10.dp),
+            modifier = Modifier.padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(t.displayTitle, color = Color.White, maxLines = 1)
                 Text(t.displayArtist, color = Color.White.copy(0.6f), fontSize = 12.sp, maxLines = 1)
             }
             IconButton(onClick = onPlayPause) {
                 Icon(
-                    if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    null,
+                    imageVector = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                    contentDescription = null,
                     tint = Color.White
                 )
             }
             IconButton(onClick = onNext) {
-                Icon(Icons.Default.SkipNext, null, tint = Color.White)
+                Icon(Icons.Default.SkipNext, contentDescription = null, tint = Color.White)
             }
         }
     }
@@ -104,17 +100,21 @@ fun FullPlayerScreen(
         }
     }
     Column(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("⌄", color = Color.White, fontSize = 22.sp, modifier = androidx.compose.ui.modifier.clickableCompat(onBack))
-        Spacer(Modifier.height(16.dp))
+        Text(
+            "⌄",
+            color = Color.White,
+            fontSize = 22.sp,
+            modifier = Modifier.clickable(onClick = onBack)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         LiquidGlassPanel(radius = 28.dp, mode = glassMode, intensity = 0.9f) {
-            // Cover placeholder area with title if no coil album in controller
             Column(
-                Modifier.padding(20.dp),
+                modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -130,7 +130,7 @@ fun FullPlayerScreen(
                 )
             }
         }
-        Spacer(Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         val dur = state.durationMs.coerceAtLeast(1)
         Slider(
             value = (pos.toFloat() / dur).coerceIn(0f, 1f),
@@ -141,14 +141,17 @@ fun FullPlayerScreen(
             ),
             modifier = Modifier.fillMaxWidth()
         )
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(formatMs(pos), color = Color.White.copy(0.6f), fontSize = 11.sp)
             Text(formatMs(dur), color = Color.White.copy(0.6f), fontSize = 11.sp)
         }
-        Spacer(Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         LiquidGlassPanel(radius = 24.dp, mode = glassMode, intensity = 0.8f) {
             Row(
-                Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -158,18 +161,28 @@ fun FullPlayerScreen(
                     Text(if (state.shuffle) "⇄*" else "⇄", color = Color.White)
                 }
                 IconButton(onClick = { player.previous() }) {
-                    Icon(Icons.Default.SkipPrevious, null, tint = Color.White, modifier = Modifier.size(36.dp))
+                    Icon(
+                        Icons.Default.SkipPrevious,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(36.dp)
+                    )
                 }
                 IconButton(onClick = { player.playPause() }) {
                     Icon(
-                        if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                        null,
+                        imageVector = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                        contentDescription = null,
                         tint = Color.White,
                         modifier = Modifier.size(48.dp)
                     )
                 }
                 IconButton(onClick = { player.next() }) {
-                    Icon(Icons.Default.SkipNext, null, tint = Color.White, modifier = Modifier.size(36.dp))
+                    Icon(
+                        Icons.Default.SkipNext,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(36.dp)
+                    )
                 }
                 IconButton(onClick = { player.cycleRepeat() }) {
                     Text(
@@ -186,8 +199,8 @@ fun FullPlayerScreen(
         if (track != null) {
             IconButton(onClick = { onToggleFavorite(track.id, !track.isFavorite) }) {
                 Icon(
-                    if (track.isFavorite) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
-                    null,
+                    imageVector = if (track.isFavorite) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
+                    contentDescription = null,
                     tint = AetherPrimary
                 )
             }
@@ -199,4 +212,3 @@ private fun formatMs(ms: Long): String {
     val s = (ms / 1000).toInt()
     return "%d:%02d".format(s / 60, s % 60)
 }
-
