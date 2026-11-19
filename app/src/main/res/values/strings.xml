@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Aether Music</string>
-    <string name="widget_player">Aether Player</string>
-    <string name="notification_channel">Playback</string>
-    <string name="scan_library">Scan library</string>
-    <string name="now_playing">Now playing</string>
 </resources>
