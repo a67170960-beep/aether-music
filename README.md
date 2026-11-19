@@ -1,8 +1,20 @@
-# Aether Music (simple)
+# Aether Music 1.1
 
-Local MediaStore library + Media3 playback. Views UI (no Compose) so CI builds reliably.
+Local Media3 player with dark glass UI.
 
-1. Install APK
-2. Allow music permission
-3. Scan library
-4. Tap a track
+## Features
+- Splash (short)
+- Library scan (MediaStore)
+- Search
+- Favorites
+- Full player + mini bar
+- Shuffle / Repeat
+- Equalizer + Bass boost + presets
+- Playlists (create/list)
+- Statistics (play counts)
+- Sleep timer
+- Settings (glass mode)
+- MediaSession notification controls
+
+## Build
+GitHub Actions workflow `Build Aether APK`.

@@ -23,22 +23,16 @@ class PlaybackService : MediaSessionService() {
             .setHandleAudioBecomingNoisy(true)
             .build()
         val pi = PendingIntent.getActivity(
-            this, 0,
-            Intent(this, MainActivity::class.java),
+            this, 0, Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        session = MediaSession.Builder(this, player!!)
-            .setSessionActivity(pi)
-            .build()
+        session = MediaSession.Builder(this, player!!).setSessionActivity(pi).build()
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = session
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = session
 
     override fun onDestroy() {
-        session?.run {
-            player.release()
-            release()
-        }
+        session?.run { player.release(); release() }
         session = null
         player = null
         super.onDestroy()
