@@ -1,5 +1,4 @@
 package ru.aether.music
-
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -11,45 +10,36 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_simple)
-        findViewById<TextView>(R.id.header).text = "Settings"
+        findViewById<TextView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<TextView>(R.id.header).text = "Настройки"
         val content = findViewById<LinearLayout>(R.id.content)
         val store = AetherApp.instance.library
-
-        fun addTitle(t: String) {
-            content.addView(TextView(this).apply {
-                text = t
-                setTextColor(0xFFFFFFFF.toInt())
-                textSize = 16f
-                setPadding(0, 16, 0, 8)
-            })
-        }
-
-        addTitle("Liquid Glass mode")
-        listOf("ULTRA", "EXTREME", "FROSTED", "CRYSTAL", "MINIMAL", "PERFORMANCE").forEach { m ->
+        fun title(t: String) = content.addView(TextView(this).apply {
+            text = t; setTextColor(0xFFF2F2F5.toInt()); textSize = 16f; setPadding(0, 16, 0, 8)
+        })
+        title("Стиль стекла (без неона)")
+        listOf("frost" to "Матовое", "ultra" to "Ультра", "clear" to "Прозрачное").forEach { (k, label) ->
             content.addView(MaterialButton(this).apply {
-                text = if (store.glassMode() == m) "$m ✓" else m
+                text = if (store.glassStyle() == k) "$label ✓" else label
                 setOnClickListener {
-                    store.setGlassMode(m)
-                    Toast.makeText(this@SettingsActivity, "Glass: $m", Toast.LENGTH_SHORT).show()
+                    store.setGlassStyle(k)
+                    Toast.makeText(this@SettingsActivity, label, Toast.LENGTH_SHORT).show()
                     recreate()
                 }
             })
         }
-
-        addTitle("Library")
+        title("Библиотека")
         content.addView(MaterialButton(this).apply {
-            text = "Clear favorites"
+            text = "Очистить избранное"
             setOnClickListener {
                 getSharedPreferences("aether", MODE_PRIVATE).edit().remove("favs").apply()
-                Toast.makeText(this@SettingsActivity, "Favorites cleared", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@SettingsActivity, "Готово", Toast.LENGTH_SHORT).show()
             }
         })
-
-        addTitle("About")
+        title("О приложении")
         content.addView(TextView(this).apply {
-            text = "Aether Music 1.1.0\nLocal-first Media3 player\nDark glass UI · no cloud upload\nViews build (stable CI)"
-            setTextColor(0xFFAAAAAA.toInt())
-            textSize = 13f
+            text = "Aether Music 1.2\nЛокальный плеер · матовое стекло\nБез облака · Media3\nИнтерфейс на русском"
+            setTextColor(0xFFAAAAAA.toInt()); textSize = 13f
         })
     }
 }

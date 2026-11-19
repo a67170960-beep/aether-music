@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Aether Music</string>
-    <string name="tab_library">Library</string>
-    <string name="tab_search">Search</string>
-    <string name="tab_favorites">Favorites</string>
-    <string name="tab_more">More</string>
+    <string name="tab_library">Библиотека</string>
+    <string name="tab_search">Поиск</string>
+    <string name="tab_favorites">Избранное</string>
+    <string name="tab_more">Ещё</string>
+    <string name="scan">Сканировать</string>
+    <string name="nothing">Ничего не играет</string>
+    <string name="search_hint">Треки, исполнители, альбомы…</string>
+    <string name="splash_title">AETHER</string>
+    <string name="splash_sub">чистое стекло · локальная музыка</string>
 </resources>

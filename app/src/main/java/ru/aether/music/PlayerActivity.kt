@@ -1,5 +1,4 @@
 package ru.aether.music
-
 import android.content.ComponentName
 import android.os.Bundle
 import android.os.Handler
@@ -22,7 +21,6 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var pos: TextView
     private lateinit var dur: TextView
     private lateinit var btnPlay: ImageButton
-
     private val tick = object : Runnable {
         override fun run() {
             val c = controller
@@ -35,57 +33,39 @@ class PlayerActivity : AppCompatActivity() {
             handler.postDelayed(this, 400)
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
-        seek = findViewById(R.id.seek)
-        pos = findViewById(R.id.pos)
-        dur = findViewById(R.id.dur)
-        btnPlay = findViewById(R.id.btnPlay)
+        seek = findViewById(R.id.seek); pos = findViewById(R.id.pos); dur = findViewById(R.id.dur); btnPlay = findViewById(R.id.btnPlay)
         findViewById<TextView>(R.id.btnBack).setOnClickListener { finish() }
         findViewById<ImageButton>(R.id.btnPrev).setOnClickListener { controller?.seekToPreviousMediaItem() }
         findViewById<ImageButton>(R.id.btnNext).setOnClickListener { controller?.seekToNextMediaItem() }
         btnPlay.setOnClickListener {
             val c = controller ?: return@setOnClickListener
-            if (c.isPlaying) c.pause() else c.play()
-            updateBtn()
+            if (c.isPlaying) c.pause() else c.play(); updateBtn()
         }
         seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) controller?.seekTo(progress.toLong())
-            }
+            override fun onProgressChanged(sb: SeekBar?, p: Int, fromUser: Boolean) { if (fromUser) controller?.seekTo(p.toLong()) }
             override fun onStartTrackingTouch(sb: SeekBar?) {}
             override fun onStopTrackingTouch(sb: SeekBar?) {}
         })
-
-        val token = SessionToken(this, ComponentName(this, PlaybackService::class.java))
-        future = MediaController.Builder(this, token).buildAsync()
+        future = MediaController.Builder(this, SessionToken(this, ComponentName(this, PlaybackService::class.java))).buildAsync()
         future?.addListener({
             controller = runCatching { future?.get() }.getOrNull()
             controller?.addListener(object : Player.Listener {
                 override fun onEvents(player: Player, events: Player.Events) {
-                    findViewById<TextView>(R.id.title).text =
-                        player.mediaMetadata.title?.toString() ?: "Nothing playing"
-                    findViewById<TextView>(R.id.artist).text =
-                        player.mediaMetadata.artist?.toString() ?: ""
+                    findViewById<TextView>(R.id.title).text = player.mediaMetadata.title?.toString() ?: "Ничего не играет"
+                    findViewById<TextView>(R.id.artist).text = player.mediaMetadata.artist?.toString() ?: ""
                     updateBtn()
                 }
             })
             handler.post(tick)
         }, MoreExecutors.directExecutor())
     }
-
     private fun updateBtn() {
-        btnPlay.setImageResource(
-            if (controller?.isPlaying == true) android.R.drawable.ic_media_pause
-            else android.R.drawable.ic_media_play
-        )
+        btnPlay.setImageResource(if (controller?.isPlaying == true) android.R.drawable.ic_media_pause else android.R.drawable.ic_media_play)
     }
-
     override fun onDestroy() {
-        handler.removeCallbacks(tick)
-        future?.let { MediaController.releaseFuture(it) }
-        super.onDestroy()
+        handler.removeCallbacks(tick); future?.let { MediaController.releaseFuture(it) }; super.onDestroy()
     }
 }

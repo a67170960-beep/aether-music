@@ -2,70 +2,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:background="#0A0A12">
+    android:orientation="vertical" android:background="#0B0B0F">
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="vertical" android:padding="16dp">
-        <TextView android:id="@+id/greet" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Aether Music" android:textColor="#FFFFFF" android:textSize="26sp" android:textStyle="bold"/>
-        <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:textColor="#99FFFFFF" android:textSize="13sp" android:layout_marginTop="2dp"/>
+        android:orientation="horizontal" android:padding="16dp" android:gravity="center_vertical">
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="vertical">
+            <TextView android:id="@+id/greet" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textColor="#F2F2F5"
+                android:textSize="24sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/status" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:textColor="#88FFFFFF" android:textSize="13sp"/>
+        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnScan" style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content" android:layout_height="40dp"
+            android:text="@string/scan" android:textSize="12sp"/>
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:id="@+id/tabs" android:layout_width="match_parent" android:layout_height="44dp"
         android:background="#00000000"
-        app:tabTextColor="#88FFFFFF"
-        app:tabSelectedTextColor="#5EEAD4"
-        app:tabIndicatorColor="#7C6CFF"
-        app:tabMode="fixed"
-        app:tabGravity="fill"/>
+        app:tabTextColor="#77FFFFFF" app:tabSelectedTextColor="#F2F2F5"
+        app:tabIndicatorColor="#99FFFFFF" app:tabMode="fixed" app:tabGravity="fill"/>
 
-    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp"
-        android:layout_weight="1">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list"
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            android:paddingBottom="100dp" android:clipToPadding="false"/>
-        <LinearLayout android:id="@+id/searchBox" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical"
-            android:padding="12dp" android:visibility="gone">
-            <EditText android:id="@+id/searchInput" android:layout_width="match_parent"
-                android:layout_height="48dp" android:hint="Search songs, artists…"
-                android:textColor="#FFFFFF" android:textColorHint="#66FFFFFF"
-                android:background="@drawable/bg_glass" android:padding="12dp"
-                android:inputType="text" android:imeOptions="actionSearch"/>
-        </LinearLayout>
-    </FrameLayout>
+    <EditText android:id="@+id/searchInput" android:layout_width="match_parent"
+        android:layout_height="46dp" android:layout_marginHorizontal="12dp" android:layout_marginTop="8dp"
+        android:hint="@string/search_hint" android:textColor="#F2F2F5" android:textColorHint="#55FFFFFF"
+        android:background="@drawable/bg_glass" android:paddingHorizontal="14dp"
+        android:inputType="text" android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list" android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:paddingBottom="8dp" android:clipToPadding="false"/>
 
     <LinearLayout android:id="@+id/playerBar" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:orientation="vertical"
-        android:background="@drawable/bg_glass_dark" android:padding="12dp"
+        android:background="@drawable/bg_glass_strong" android:padding="12dp"
         android:layout_margin="10dp">
-        <TextView android:id="@+id/nowTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Nothing playing" android:textColor="#FFFFFF" android:textSize="15sp" android:maxLines="1"/>
-        <TextView android:id="@+id/nowArtist" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="" android:textColor="#99FFFFFF" android:textSize="12sp" android:maxLines="1"/>
-        <SeekBar android:id="@+id/seek" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"/>
+        <TextView android:id="@+id/nowTitle" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="@string/nothing"
+            android:textColor="#F2F2F5" android:textSize="15sp" android:maxLines="1"/>
+        <TextView android:id="@+id/nowArtist" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:textColor="#88FFFFFF" android:textSize="12sp" android:maxLines="1"/>
+        <SeekBar android:id="@+id/seek" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="4dp"/>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:gravity="center" android:orientation="horizontal">
-            <ImageButton android:id="@+id/btnShuffle" android:layout_width="40dp" android:layout_height="40dp"
+            <ImageButton android:id="@+id/btnShuffle" android:layout_width="44dp" android:layout_height="44dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_sort_by_size" android:contentDescription="Shuffle"/>
+                android:src="@android:drawable/ic_menu_sort_by_size" android:contentDescription="shuffle"/>
             <ImageButton android:id="@+id/btnPrev" android:layout_width="48dp" android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_media_previous" android:contentDescription="Prev"/>
+                android:src="@android:drawable/ic_media_previous" android:contentDescription="prev"/>
             <ImageButton android:id="@+id/btnPlay" android:layout_width="56dp" android:layout_height="56dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_media_play" android:contentDescription="Play"/>
+                android:src="@android:drawable/ic_media_play" android:contentDescription="play"/>
             <ImageButton android:id="@+id/btnNext" android:layout_width="48dp" android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_media_next" android:contentDescription="Next"/>
-            <ImageButton android:id="@+id/btnRepeat" android:layout_width="40dp" android:layout_height="40dp"
+                android:src="@android:drawable/ic_media_next" android:contentDescription="next"/>
+            <ImageButton android:id="@+id/btnRepeat" android:layout_width="44dp" android:layout_height="44dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_rotate" android:contentDescription="Repeat"/>
+                android:src="@android:drawable/ic_menu_rotate" android:contentDescription="repeat"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

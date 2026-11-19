@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-
     <application
         android:name=".AetherApp"
         android:allowBackup="true"
@@ -16,24 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Aether"
         android:requestLegacyExternalStorage="true">
-        <activity
-            android:name=".SplashActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Aether.Splash">
+        <activity android:name=".SplashActivity" android:exported="true" android:theme="@style/Theme.Aether.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" android:exported="false" android:theme="@style/Theme.Aether"/>
-        <activity android:name=".PlayerActivity" android:exported="false" android:theme="@style/Theme.Aether"/>
-        <activity android:name=".EqualizerActivity" android:exported="false" android:theme="@style/Theme.Aether"/>
-        <activity android:name=".SettingsActivity" android:exported="false" android:theme="@style/Theme.Aether"/>
-        <activity android:name=".StatsActivity" android:exported="false" android:theme="@style/Theme.Aether"/>
-        <activity android:name=".PlaylistsActivity" android:exported="false" android:theme="@style/Theme.Aether"/>
-        <service
-            android:name=".PlaybackService"
-            android:exported="true"
+        <activity android:name=".MainActivity" android:exported="false"/>
+        <activity android:name=".PlayerActivity" android:exported="false"/>
+        <activity android:name=".EqualizerActivity" android:exported="false"/>
+        <activity android:name=".SettingsActivity" android:exported="false"/>
+        <activity android:name=".StatsActivity" android:exported="false"/>
+        <activity android:name=".PlaylistsActivity" android:exported="false"/>
+        <service android:name=".PlaybackService" android:exported="true"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>
                 <action android:name="androidx.media3.session.MediaSessionService"/>

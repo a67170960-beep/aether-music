@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="horizontal" android:padding="12dp"
+    android:orientation="horizontal" android:paddingHorizontal="14dp" android:paddingVertical="10dp"
     android:background="?attr/selectableItemBackground" android:gravity="center_vertical">
     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
         android:layout_weight="1" android:orientation="vertical">
-        <TextView android:id="@+id/trackTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:textColor="#FFFFFF" android:textSize="15sp" android:maxLines="1"/>
-        <TextView android:id="@+id/trackArtist" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:textColor="#99FFFFFF" android:textSize="12sp" android:maxLines="1"/>
+        <TextView android:id="@+id/trackTitle" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:textColor="#F2F2F5" android:textSize="15sp" android:maxLines="1"/>
+        <TextView android:id="@+id/trackArtist" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:textColor="#88FFFFFF" android:textSize="12sp" android:maxLines="1"/>
     </LinearLayout>
     <ImageButton android:id="@+id/btnFav" android:layout_width="40dp" android:layout_height="40dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/btn_star_big_off" android:contentDescription="Favorite"/>
+        android:src="@android:drawable/btn_star_big_off" android:contentDescription="fav"/>
 </LinearLayout>
