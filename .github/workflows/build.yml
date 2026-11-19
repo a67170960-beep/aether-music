@@ -14,14 +14,36 @@ jobs:
           distribution: temurin
           java-version: "17"
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-      - name: Assemble Debug
+        uses: gradle/actions/setup-gradle@v3
+      - name: Create wrapper and build
         run: |
-          chmod +x gradlew 2>/dev/null || true
+          set -e
           if [ ! -f gradlew ]; then
-            gradle wrapper --gradle-version 8.11.1
-            chmod +x gradlew
+            gradle wrapper --gradle-version 8.7 || true
           fi
+          if [ ! -f gradlew ]; then
+            # fallback: download wrapper jar via official template
+            mkdir -p gradle/wrapper
+            curl -sL -o gradle/wrapper/gradle-wrapper.jar \
+              https://raw.githubusercontent.com/gradle/gradle/v8.7.0/gradle/wrapper/gradle-wrapper.jar
+            cat > gradle/wrapper/gradle-wrapper.properties << 'P'
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.7-bin.zip
+networkTimeout=10000
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+P
+            cat > gradlew << 'G'
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+exec java -jar "$DIR/gradle/wrapper/gradle-wrapper.jar" "$@"
+G
+            # gradle wrapper jar is not a fat jar for CLI - use gradle from apt instead
+            sudo apt-get update -qq && sudo apt-get install -y -qq gradle
+            gradle wrapper --gradle-version 8.7
+          fi
+          chmod +x gradlew
           ./gradlew :app:assembleDebug --stacktrace --no-daemon
       - uses: actions/upload-artifact@v4
         with:
